@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block main %}
+    <h2>Оставьте отзыв</h2>
+    <p>Мы ценим ваше мнение! Заполните форму ниже, чтобы оставить отзыв о нашем магазине.</p>
+
+    <!-- HTML-форма -->
+    <form action="/feedback" method="post">
+        <!-- Однострочное текстовое поле -->
+        <label for="name">Ваше имя:</label><br>
+        {% if current_user.is_authenticated %}
+
+        <input type="text" id="name" name="name" value="{{current_user.username}}" readonly><br><br>
+        {% else %}
+        <input type="text" id="name" name="name" placeholder="Введите ваше имя" required><br><br>
+        {% endif %}
+        
+        
+        <!-- Радиокнопки -->
+        <p>Как вы оцениваете наш магазин?</p>
+        <input type="radio" id="excellent" name="rating" value="excellent" required>
+        <label for="excellent">Отлично</label><br>
+        <input type="radio" id="good" name="rating" value="good">
+        <label for="good">Хорошо</label><br>
+        <input type="radio" id="average" name="rating" value="average">
+        <label for="average">Средне</label><br>
+        <input type="radio" id="poor" name="rating" value="poor">
+        <label for="poor">Плохо</label><br><br>
+        
+        <!-- Флажки -->
+        <p>Какие услуги вы использовали?</p>
+        <input type="checkbox" id="makeup" name="services" value="makeup">
+        <label for="makeup">Услуги визажиста</label><br>
+        <input type="checkbox" id="testing" name="services" value="testing">
+        <label for="testing">Тестирование пробников</label><br>
+        <input type="checkbox" id="loyalty" name="services" value="loyalty">
+        <label for="loyalty">Программа лояльности</label><br><br>
+        
+        <!-- Многострочное текстовое поле -->
+        <label for="feedback">Ваш отзыв:</label><br>
+        <textarea id="feedback" name="feedback" rows="4" cols="50" placeholder="Напишите ваш отзыв" required></textarea><br><br>
+        
+        <!-- Прокручивающееся текстовое поле -->
+        <label for="suggestions">Ваши предложения (если есть):</label><br>
+        <textarea id="suggestions" name="suggestions" rows="3" cols="40" style="overflow: auto;"></textarea><br><br>
+        
+        <!-- Раскрывающийся список -->
+        <label for="visit_frequency">Как часто вы посещаете наш магазин?</label><br>
+        <select id="visit_frequency" name="visit_frequency">
+            <option value="often">Часто</option>
+            <option value="sometimes">Иногда</option>
+            <option value="rarely">Редко</option>
+        </select>     
+        <br>   <!-- Кнопка отправки -->
+        <button type="submit" onclick="alert('ваше сообщение было отправлено!')">Отправить</button><br>
+        
+        <!-- Кнопка отправки -->
+        <button type="submit">Отправить</button>
+    </form>
+{% endblock %}

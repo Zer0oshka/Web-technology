@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Flasky - Register{% endblock %}
+
+{% block page_content %}
+<div class="auth-form-container auth-form">
+    <h1>Регистрация</h1>
+            {{ wtf.quick_form(form) }}
+
+    <h2>Создавая аккаунт, вы соглашаетесь с <a href='Политика_конфиденциальности.pdf' target="_blank"> Политикой конфиденциальности</a></h2>
+</div>
+{% endblock %}

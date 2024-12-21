@@ -1,0 +1,394 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}Лэтуаль{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='labb1.css') }}">
+{% endblock %}
+
+{% block navbar %}
+
+
+<!-- Модальное окно -->
+<div id="productModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="modal-body">
+            <img id="modalImage" src="" alt="Изображение товара">
+            <h3 id="modalName"></h3>
+            <p id="modalDescription"></p>
+            <p><strong>Цена:</strong> <span id="modalPrice"></span></p>
+            {% if current_user.is_authenticated %}
+            <div class="cart-controls">
+            {% else %}
+            <div class="cart-controls hidden">
+            {% endif %}
+
+                
+                <button id="decreaseQuantity">-</button>
+                <span id="quantity">1</span>
+                <button id="increaseQuantity">+</button>
+                <button id="addToCart">Добавить в корзину</button>
+
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<div class="indent-left">
+    <header>
+        <div class="header-left">
+            <div class="logo">
+                <a href="https://www.letu.ru/product/nars-stoikii-tonalnyi-krem-natural-radiant-longwear-foundation/62200016">
+                    <img src="https://avatars.mds.yandex.net/i?id=f221b1d597aba9161ea8e04fd40a5bc9d26e2ce1-7662207-images-thumbs&n=13"
+                    style="float: left;
+                    margin-left: 0px;
+                
+                    width: 70%;
+                    height: 107px;"
+                    alt="NARS Стойкий тональный крем Natural Radiant Longwear Foundation"></a>
+            </div>
+            
+        </div>
+        <div class="header-center">
+            <h1 ><a style="color: black;" href="{{ url_for('main.index') }}">Лэтуаль</a></h1>
+        </div>
+
+        <ul class="nav navbar-nav">
+            {% if current_user.can(Permission.MODERATE) %}
+            <li><a href="{{ url_for('main.moderate') }}">Moderate Comments</a></li>
+            {% endif %}
+            {% if current_user.is_authenticated %}
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <img src="{{ current_user.gravatar(size=18) }}">
+                    Аккаунт <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a style="color: black;" href="{{ url_for('auth.change_password') }}">Сменить пароль</a></li>
+                    <li><a style="color: black;" href="{{ url_for('auth.change_email_request') }}">Сменить почту</a></li>
+                    <li><a style="color: black;" href="{{ url_for('auth.logout') }}">Выйти</a></li>
+                </ul>
+            </li>
+            {% else %}
+            <li><a style="color: black;" href="{{ url_for('auth.login') }}">Войти </a></li>
+            {% endif %}
+        </ul>
+    </header>
+    <!-- Полоса с разделами -->
+    <nav class="sections-bar">
+        <a style="text-decoration: underline;" href="/laba1">Главная страница</a>
+        {% if current_user.is_authenticated %}
+        <a style="text-decoration: underline;" href="{{ url_for('main.user', username=current_user.username) }}">Профиль</a>
+        {% endif %}
+        <a style="text-decoration: underline;" href="/feedback">Отзывы</a>
+    </nav>
+    <!-- Основное содержимое сайта -->
+    <div class="container">
+        <!-- Левая колонка -->
+        <aside class="sidebar">
+            <ul>
+                <!-- <form action="laba1/page1" method="post" enctype="multipart/form-data"> -->
+                <li ><a style="color: rgb(0, 0, 255); text-decoration: underline;" href="/laba1/about_us" >О нас</a></li>
+                <li><a style="color: rgb(0, 0, 255); text-decoration: underline;" href="/laba1/services">Товары</a></li>
+                <li><a style="color: rgb(0, 0, 255); text-decoration: underline;" href="/laba1/contacts">Контакты</a></li>
+                <li><a style="color: rgb(0, 0, 255); text-decoration: underline;" href="/laba1/employees">Сотрудники</a></li>
+                
+            </ul>
+        </aside>
+
+        <!-- Основной контент -->
+        <main>
+            {% block content %}
+            <div class="container" style="flex-direction: column;">
+                {% for message in get_flashed_messages() %}
+                <div class="alert alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ message }}
+                </div>
+                {% endfor %}
+
+                
+            </div>
+            
+            {% endblock %}   
+            {% block page_content %}{% endblock %}   
+            {% block main %}
+            {% endblock %}
+        </main>
+
+        <!-- Правая колонка -->
+        {% if current_user.is_authenticated %}
+            <!-- Кнопка для открытия корзины -->
+            <button id="cartButton" class="cart-button " onclick="opencorzina()">
+                🛒
+            </button>
+
+            <!-- Модальное окно для корзины -->
+            <div id="cartModal" class="cart-modal hidden">
+                <div class="cart-content">
+                    <button id="closeCart" class="close-button" onclick="closecorzina()">✖</button>
+                    <h2>Корзина</h2>
+                    <div id="cartContainer">
+                        <p>Корзина пуста</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <aside class="right-sidebar">
+            {% if false %}
+
+            {% else %}
+            <div class="images">
+                <a href="https://a2company.ru/a2about">
+                    <img src="https://avatars.mds.yandex.net/i?id=c6f4e4a6df86765802ff2b305bb65246_l-5141542-images-thumbs&n=13" alt="NARS Стойкий тональный крем Natural Radiant Longwear Foundation">
+                    A&A – бесспорный лидер в создании систем управления для фитнес индустрии России.</a>
+                <a href="https://iconproducts.com">
+                    <img src="https://avatars.mds.yandex.net/i?id=b324038c0dc709fd260dc4c9276a5d4e5527c0ca-5232271-images-thumbs&n=13">
+                    I.C.O.N. – международная компания, создающая инновационные и натуральные продукты для ухода за волосами.</a>
+                <a href="https://cacharel.ru.com">
+                    <img src="https://avatars.mds.yandex.net/i?id=68436fe1580f3472f2e9b1728ecb5dfb_l-10194750-images-thumbs&n=13" alt="NARCISO RODRIGUEZ NARCISO eau de parfum Grace">
+                    Cacharel – французский бренд, известный ароматами Anaïs Anaïs, Amor Amor и Noa с яркими цветочными и фруктовыми нотами.</a>
+            </div>
+            {% endif %}
+
+        </aside>
+        <!-- Футер -->
+        <footer class="footer">
+            <p>© 2024 Название компании. Все права защищены. <a href='Политика_конфиденциальности.pdf' target="_blank"> Политикой конфиденциальности</a></p>
+        </footer>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+{% block scripts %}
+
+<script>
+
+    function opencorzina(){
+        document.getElementById('cartModal').classList.remove('hidden');
+         
+    }
+    function closecorzina(){
+        document.getElementById('cartModal').classList.add('hidden');
+         
+    }
+
+
+        function openPDF() {
+            const filePath = "file:///C:/Users/89169/Downloads/Политика%20конфиденциальности.pdf";
+            window.open(filePath, "_blank");
+        }
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const modal = document.getElementById('productModal');
+    const closeModal = document.querySelector('.close');
+    const productLinks = document.querySelectorAll('.product-link');
+
+
+    const modalImage = document.getElementById('modalImage');
+    const modalName = document.getElementById('modalName');
+    const modalDescription = document.getElementById('modalDescription');
+    const modalPrice = document.getElementById('modalPrice');
+    const quantityEl = document.getElementById('quantity');
+    let quantity = 1;
+
+
+    const cartContainer = document.getElementById('cartContainer');
+    let cart = [];
+
+
+    productLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            modalImage.src = this.dataset.image;
+            modalName.textContent = this.dataset.name;
+            modalDescription.textContent = this.dataset.description;
+            modalPrice.textContent = this.dataset.price;
+
+            quantity = 1;
+            quantityEl.textContent = quantity;
+
+            modal.style.display = 'block';
+        });
+    });
+
+
+    closeModal.addEventListener('click', function () {
+        modal.style.display = 'none';
+    });
+
+
+    document.getElementById('decreaseQuantity').addEventListener('click', function () {
+        if (quantity > 1) {
+            quantity--;
+            quantityEl.textContent = quantity;
+        }
+    });
+
+    document.getElementById('increaseQuantity').addEventListener('click', function () {
+        quantity++;
+        quantityEl.textContent = quantity;
+    });
+
+
+    async function fetchCart() {
+        const response = await fetch('/cart');
+        cart = await response.json();
+        updateCartUI();
+    }
+
+
+    async function addToCart(productName, quantity, price) {
+        const response = await fetch('/cart', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ product_name: productName, quantity, price })
+        });
+        const newItem = await response.json();
+        const existing = cart.find(item => item.id === newItem.id);
+        if (existing) {
+            existing.quantity = newItem.quantity;
+        } else {
+            cart.push(newItem);
+        }
+        updateCartUI();
+    }
+
+
+    async function updateCartItem(itemId, quantity) {
+        await fetch(`/cart/${itemId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ quantity })
+        });
+        const item = cart.find(item => item.id === itemId);
+        if (item) item.quantity = quantity;
+        updateCartUI();
+    }
+
+
+    async function deleteCartItem(itemId) {
+        await fetch(`/cart/${itemId}`, { method: 'DELETE' });
+        cart = cart.filter(item => item.id !== itemId);
+        updateCartUI();
+    }
+
+
+    function updateCartUI() {
+        cartContainer.innerHTML = '';
+        let totalAmount = 0;
+
+        if (cart.length === 0) {
+            cartContainer.innerHTML = '<p>Корзина пуста</p>';
+            return;
+        }
+
+        cart.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'cart-item';
+            div.innerHTML = `
+                <span>${item.product_name} - ${item.quantity} шт. (${item.price} ₽)</span>
+                <button class="decrease-item" data-id="${item.id}">-</button>
+                <button class="increase-item" data-id="${item.id}">+</button>
+                <button class="remove-item" data-id="${item.id}">Удалить</button>
+            `;
+            cartContainer.appendChild(div);
+
+            totalAmount += item.price * item.quantity;
+
+            div.querySelector('.decrease-item').addEventListener('click', () => {
+                if (item.quantity > 1) {
+                    updateCartItem(item.id, item.quantity - 1);
+                } else {
+                    deleteCartItem(item.id);
+                }
+            });
+
+            div.querySelector('.increase-item').addEventListener('click', () => {
+                updateCartItem(item.id, item.quantity + 1);
+            });
+
+            div.querySelector('.remove-item').addEventListener('click', () => {
+                deleteCartItem(item.id);
+            });
+        });
+
+        const totalDiv = document.createElement('div');
+        totalDiv.className = 'cart-total';
+        totalDiv.innerHTML = `<p>Общая сумма: ${totalAmount.toFixed(2)} ₽</p>`;
+        cartContainer.appendChild(totalDiv);
+    }
+
+
+    document.getElementById('addToCart').addEventListener('click', function () {
+        const productName = modalName.textContent;
+        const productPrice = parseFloat(modalPrice.textContent.replace('₽', '').trim());
+        addToCart(productName, quantity, productPrice);
+        modal.style.display = 'none';
+    });
+
+
+    window.addEventListener('click', function (e) {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+
+    fetchCart();
+});
+
+</script>
+
+<script>
+function submitLogin() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const rememberMe = document.getElementById('remember_me').checked;
+
+    if (!email || !password) {
+        alert("Пожалуйста, заполните все поля.");
+        return;
+    }
+
+    try {
+        const response = fetch('/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json', // Устанавливаем тип содержимого
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password,
+                remember_me: rememberMe // Добавляем значение чекбокса
+            })
+        });
+        
+        // if (response.ok) {
+        //     const result = response.json();
+        //     alert(result.message || "Вы успешно вошли!");
+        //     window.location.href = "/";
+        // } else {
+        //     const error = response.json();
+        //     alert(error.message || "Ошибка при входе. Проверьте данные.");
+        // }
+    } catch (error) {
+        console.error("Ошибка:", error);
+        alert("Произошла ошибка. Попробуйте позже.");
+    }
+}
+</script>
+{{ super() }}
+{{ moment.include_moment() }}
+{% endblock %}

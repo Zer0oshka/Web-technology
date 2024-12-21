@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block main %}
+<h2>Контакты</h2>
+
+<!-- Введение -->
+<p>
+    Мы всегда на связи и готовы ответить на ваши вопросы, помочь с выбором продукции или уточнить информацию о наших услугах. Выберите удобный способ связи или посетите один из наших магазинов. Контактные данные, форма обратной связи и карта с местоположением представлены ниже.
+</p>
+
+<!-- Контактная информация -->
+<h3>Свяжитесь с нами</h3>
+<ul>
+    <li><strong>Телефон горячей линии:</strong> +7 (800) 200 23 45</li>
+    <li><strong>Электронная почта:</strong> info@letoile.ru</li>
+    <li><strong>Адрес головного офиса:</strong> Москва, Большая Дорогомиловская ул., 5</li>
+</ul>
+
+<!-- Форма обратной связи -->
+<h3>Напишите нам</h3>
+<form action="/submit_contact_form" method="post">
+    <label for="email">Ваш email:</label><br>
+    <input type="email" id="email" name="email" placeholder="example@domain.com" required><br><br>
+
+    <label for="message">Сообщение:</label><br>
+    <textarea id="message" name="message" rows="5" placeholder="Введите ваше сообщение здесь..." required></textarea><br><br>
+
+    <button type="submit">Отправить</button>
+</form>
+
+<!-- Карта и информация о местоположении -->
+<h3>Наше местоположение</h3>
+<p>
+    Мы расположены в самом центре Москвы, и наш головной офис удобно доступен на общественном транспорте. Найдите нас по адресу ниже или воспользуйтесь картой.
+</p>
+
+<!-- Встраиваемая карта -->
+<div style="width:100%;height:400px;">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d8982.89812000828!2d37.54464520418477!3d55.74591513959821!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46b54bc6f77fcd9d%3A0xaf28f5b7cf1f1484!2z0Jsn0Y3RgtGD0LDQu9GM!5e0!3m2!1sru!2snl!4v1730308390872!5m2!1sru!2snl" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        
+    </iframe>
+</div>
+<br>
+<br>
+<!-- Время работы -->
+<h3>Время работы</h3>
+<ul>
+    <li><strong>Понедельник - Пятница:</strong> 10:00 - 23:00</li>
+    <li><strong>Суббота:</strong> 10:00 - 22:00</li>
+    <li><strong>Воскресенье:</strong> 10:00 - 22:00</li>
+</ul>
+
+<!-- Социальные сети -->
+<h3>Мы в социальных сетях</h3>
+<p>Присоединяйтесь к нам в социальных сетях, чтобы первыми узнавать о новинках, акциях и специальных предложениях:</p>
+<ul>
+    <li><a href="https://t.me/letoile_officialbot">
+        <img
+        style="float: left; margin-left: 0px; width: 5%; height: auto;" 
+        src="https://a.d-cd.net/6e01e75s-1920.jpg"
+        >
+        Telegram</a></li>
+    <li>
+        <a href="https://vk.com/letoile_official">
+        <img
+        style="float: left; margin-left: 0px; width: 5%; height: auto;" 
+        src="https://cu.agrachoff.ru/wp-content/uploads/2023/09/gruzoperevozki_nizhnevartovsk_vkontakte_vyveska.jpg"
+        href="https://vk.com/letoile_official"
+        >
+        Вконтакте</a></li>
+    <li><a href="https://api.whatsapp.com/send?phone=79263212670">
+        <img
+        style="float: left; margin-left: 0px; width: 5%; height: auto;" 
+        src="https://avatars.mds.yandex.net/i?id=72b474537c7e932d2694130271e8deeb4987c6c6-9107083-images-thumbs&n=13"
+        >
+        WhatsApp</a></li>
+</ul>
+{% endblock %}

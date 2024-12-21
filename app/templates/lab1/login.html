@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block main %}
+<div class="auth-form-container">
+    <form class="auth-form" style="flex-direction: column;" method="POST" action="/auth/login">
+        <div class="col"></div>
+        <h1>Вход</h1>
+        {{ wtf.quick_form(form) }}
+        <div class="auth-links">
+            <p>Забыли пароль? <a href="{{ url_for('auth.password_reset_request') }}">Нажмите, чтобы сбросить настройки.</a>.</p>
+            <p>Новый пользователь? <a href="{{ url_for('auth.register') }}">Нажмите, чтобы зарегистрироваться</a>.</p>
+        </div>
+    </form>
+</div>
+{% endblock %}

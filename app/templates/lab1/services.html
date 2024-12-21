@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block main %}
+    <h2>Наши продукты</h2>
+    <p>В Лэтуаль мы предлагаем широкий спектр услуг, направленных на улучшение вашего опыта покупок и помощь в выборе
+        идеальных продуктов. Наша команда профессионалов всегда готова предоставить вам персонализированные решения,
+        соответствующие вашим потребностям.
+    </p>
+    <form method="GET" action="{{ url_for('main.lab1_page2') }}">
+        <input type="text" name="search" placeholder="Поиск..." value="{{ search_query }}">
+        <input type="hidden" name="category" value="{{ category }}">
+        <button type="submit">Искать</button>
+    </form>
+
+    <div class="category-filters">
+        <a href="{{ url_for('main.lab1_page2', category='all', search=search_query) }}" class="filter-button {% if category == 'all' %}active{% endif %}">
+            Все категории
+        </a>
+        <a href="{{ url_for('main.lab1_page2', category='face', search=search_query) }}" class="filter-button {% if category == 'face' %}active{% endif %}">
+            Косметика для лица
+        </a>
+        <a href="{{ url_for('main.lab1_page2', category='eyes', search=search_query) }}" class="filter-button {% if category == 'eyes' %}active{% endif %}">
+            Косметика для глаз
+        </a>
+        <a href="{{ url_for('main.lab1_page2', category='brows', search=search_query) }}" class="filter-button {% if category == 'brows' %}active{% endif %}">
+            Косметика для бровей
+        </a>
+    </div>
+    
+
+
+    <!-- Список товаров -->
+    <div class="employee-list">
+        {% if products %}
+            {% for product in products %}
+            <div  class="employee-card">
+                <a href="#" 
+                class="product-link" 
+                data-name="{{ product.name }}" 
+                data-description="{{ product.description }}" 
+                data-price="{{ product.price }}" 
+                data-image="{{ product.image }}">
+                    <img src="{{ product.image }}" alt="{{ product.product_name }}">
+                    <h3 class="adjust-width">{{ product.name }}</h3>
+                </a>
+                <p><strong>Товар:</strong> {{ product.short_description }}</p>
+                <p><strong>Цена:</strong> {{ product.price }}</p>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>По вашему запросу ничего не найдено.</p>
+        {% endif %}
+    </div>
+
+{% endblock %}

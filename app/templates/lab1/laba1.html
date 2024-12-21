@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+{% block main %}
+
+<h2>Главная страница</h2>
+
+<!-- Слайдер -->
+<div id="slider" class="slider">
+    {% for product in products %}
+    <div class="slider-item {% if loop.first %}active{% endif %}">
+        <img src="{{ product.image }}" alt="{{ product.name }}" class="slider-image">
+        <div class="slider-caption">
+            <p>{{ product.short_description }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<button id="prev" class="slider-button">❮</button>
+<button id="next" class="slider-button">❯</button>
+
+
+
+
+
+<p>
+    В мире косметики и парфюмерии Л'Этуаль занимает особое место, предлагая широкий ассортимент продукции для красоты и ухода. Наши магазины — это оазисы стиля и роскоши, где каждый клиент находит средства для выражения своей индивидуальности. Мы стремимся не только следовать за мировыми трендами, но и создавать уникальные предложения, отвечающие требованиям современного потребителя.
+    <img src="https://vs-online.ru/wp-content/uploads/2022/05/%D0%BE%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B0-%D0%BD%D0%B0-%D1%81%D0%B0%D0%B9%D1%82-2560-%C3%97-1529-%D0%BF%D0%B8%D0%BA%D1%81.-14.jpg" alt="Фото магазина Л'Этуаль" style="float: right; margin-left: 15px; width: 300px; height: auto;">
+</p>
+
+<p>
+    Л'Этуаль гордится разнообразием косметических брендов и высококачественной продукцией, которая удовлетворяет запросы наших клиентов. От декоративной косметики до средств по уходу за кожей — наши продукты создают незабываемый опыт и помогают раскрыть красоту каждой женщины. 
+</p>
+
+<!-- Таблица: Основные категории продукции -->
+<h3>Категории продукции Л'Этуаль</h3>
+<table border="1" cellspacing="0" cellpadding="5" style="width: 60%; margin-top: 20px;">
+    <tr>
+        <td colspan="2">Категория</td>
+        <td>Популярные бренды</td>
+        <td>Описание</td>
+    </tr>
+    <tr>
+        <td colspan="2" rowspan="1">Парфюмерия</td>
+        <td>Chanel, Dior, Tom Ford</td>
+        <td>Изысканные ароматы на любой вкус, от классики до новинок.</td>
+    </tr>
+    <tr>
+        <td rowspan="2">Декоративная косметика</td>
+        <td>Для глаз</td>
+        <td>Urban Decay, NYX, Yves Saint Laurent</td>
+        <td>Тени, подводки и туши для выразительного взгляда.</td>
+    </tr>
+    <tr>
+        <td>Для губ</td>
+        <td>MAC, Lancôme, Estée Lauder</td>
+        <td>Помады, блески и карандаши в модных оттенках.</td>
+    </tr>
+    <tr>
+        <td rowspan="2">Уход за кожей</td>
+        <td>Для лица</td>
+        <td>Clinique, Biotherm, L'Occitane</td>
+        <td>Кремы, маски и сыворотки для сияющей кожи.</td>
+    </tr>
+</table>
+
+<!-- Маркированный список с популярными услугами -->
+<h3>Наши услуги</h3>
+<ul>
+    <li>Индивидуальный подбор косметики и парфюмерии
+        <ul>
+            <li>Консультации от профессиональных визажистов</li>
+            <li>Тестирование пробников на коже клиента</li>
+        </ul>
+    </li>
+    <li>Курсы макияжа и мастер-классы
+        <ul>
+            <li>Обучение основам макияжа и модным техникам</li>
+            <li>Персонализированные советы и подбор средств</li>
+        </ul>
+    </li>
+    <li>Программа лояльности
+        <ul>
+            <li>Скидки и бонусные баллы на покупки</li>
+            <li>Специальные предложения для постоянных клиентов</li>
+        </ul>
+    </li>
+</ul>
+
+<!-- Нумерованный список с описанием ухода за кожей -->
+<h3>Этапы ухода за кожей</h3>
+<ol>
+    <li>Очищение
+        <ul>
+            <li>Используйте пенки или гели для очищения, чтобы удалить загрязнения</li>
+            <li>Подберите средства по типу кожи для максимального результата</li>
+        </ul>
+    </li>
+    <li>Тонизация
+        <ul>
+            <li>Смягчает кожу и восстанавливает её pH-баланс</li>
+            <li>Подготавливает кожу к следующему этапу ухода</li>
+        </ul>
+    </li>
+    <li>Увлажнение и питание
+        <ul>
+            <li>Используйте сыворотки и кремы для восстановления баланса влаги</li>
+            <li>Подбирайте средства по типу кожи и возрасту</li>
+        </ul>
+    </li>
+</ol>
+
+<p>
+    Л'Этуаль — это больше, чем магазин. Это пространство, где каждая женщина может почувствовать себя особенной и найти то, что подчеркнет её уникальность. Мы рады предложить лучшие продукты и услуги, которые помогают вам оставаться красивыми каждый день.
+</p>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const slides = Array.from(document.querySelectorAll('.slider-item'));
+    const prevButton = document.getElementById('prev');
+    const nextButton = document.getElementById('next');
+    let currentIndex = 0;
+    let autoSlideTimeout;
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.classList.toggle('active', i === index);
+        });
+        console.log(`Активный слайд: ${index}`);
+    }
+
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % slides.length;
+        showSlide(currentIndex);
+    }
+
+    function prevSlide() {
+        currentIndex = (currentIndex > 0) ? currentIndex - 1 : slides.length - 1;
+        showSlide(currentIndex);
+    }
+
+    function startAutoSlide() {
+        clearTimeout(autoSlideTimeout); // Сбрасываем предыдущий таймер
+        autoSlideTimeout = setTimeout(function autoSwitch() {
+            nextSlide();
+            autoSlideTimeout = setTimeout(autoSwitch, 6000);
+        }, 6000);
+    }
+
+    // Обработчики событий для кнопок
+    prevButton.addEventListener('click', function () {
+        prevSlide();
+        startAutoSlide(); // Перезапуск автоматического переключения
+    });
+
+    nextButton.addEventListener('click', function () {
+        nextSlide();
+        startAutoSlide(); // Перезапуск автоматического переключения
+    });
+
+    // Инициализация слайдера
+    showSlide(currentIndex);
+    startAutoSlide(); // Запуск автоматического переключения
+});
+</script>
+
+<style>
+    /* Скрываем все элементы по умолчанию */
+        .slider-item {
+        display: none;
+    }
+
+    .slider-item.active {
+        display: flex !important;
+    }
+        /* Контейнер слайдера */
+    .slider {
+        position: relative;
+        width: 50%; 
+        height: 250px; 
+        margin: 0 auto; 
+        overflow: hidden;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+    }
+
+    /* Элементы слайдера */
+    .slider-item {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    /* Отображение активного элемента */
+    .slider-item.active {
+        display: flex;
+    }
+
+    /* Изображения слайдера */
+    .slider-image {
+        max-width: 90%; 
+        max-height: 90%; 
+        object-fit: contain; 
+        border-radius: 8px;
+    }
+
+    /* Подпись слайда */
+    .slider-caption {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+    /* Кнопки управления */
+    .slider-button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 18px;
+        z-index: 1000;
+    }
+
+    #prev {
+        left: 350px;
+    }
+
+    #next {
+        right: 350px;
+    }
+
+
+</style>
+
+
+
+
+{% endblock %}
